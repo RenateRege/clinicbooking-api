@@ -91,6 +91,71 @@ function addPatient(name, email, phone) { // A function who gets information abo
     console.log(newPatient);
 }
 
+function showAppointmentsWithPatientNames() {
+    appointments.forEach(appointment => {
+        const patient = patients.find(patient => patient.id === appointment.patientId);
+
+        console.log(
+            `${appointment.date} ${appointment.time} - ${appointment.service} with ${patient.name}` // Template literal
+        );
+    });
+}
+
+function addAppointment(patientId, service, date, time) { // Make new booking and connect booking to correct pasient.
+    const newAppointment = {
+        id: appointments.length + 1,
+        patientId: patientId,
+        service: service,
+        date: date,
+        time: time
+    };
+
+    appointments.push(newAppointment);
+
+    console.log("New appointment added:");
+    console.log(newAppointment);
+}
+
+function deleteAppointment(id) {
+    const index = appointments.findIndex(
+        appointment => appointment.id === id
+    );
+
+    if (index === -1) { // If no booking is found.
+        console.log("Appointment not found");
+        return;
+    }
+
+    appointments.splice(index, 1); // Move 1 element from list.
+
+    console.log("Appointment deleted");
+}
+
+function getAppointmentForPatient(patientId) {
+    const patientAppointments = appointments.filter( // Go through all bookings and keep those who match.
+        appointment => appointment.patientId === patientId
+    );
+
+    console.log(patientAppointments);
+}
+
+function updateAppointment(id, newDate, newTime) {
+    const appointment = appointments.find(
+        appointment => appointment.id === id
+    );
+
+    if (!appointment) {
+        console.log("Appointment not found");
+        return;
+    }
+
+    appointment.date = newDate;
+    appointment.time = newTime;
+
+    console.log("Appointment updated:");
+    console.log(appointment);
+}
+
 
 
 showPasients();
@@ -106,3 +171,14 @@ addPatient(
     "jan@example.com",
     "44556677"
 );
+showAppointmentsWithPatientNames();
+addAppointment(
+    1,
+    "Osteopathy consultation",
+    "2026-05-20",
+    "14:00"
+);
+deleteAppointment();
+getAppointmentForPatient();
+updateAppointment(1, "2026-05-25", "13:00");
+showAppointmentsWithPatientNames();
